@@ -1,5 +1,9 @@
 package com.learn;
 
+import javax.xml.crypto.Data;
+import java.io.InputStream;
+import java.io.*;
+import java.net.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.Comparator;
@@ -7,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,6 +29,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        jsonage();
 //        filtrer tab de string
 //      Collections.sort(list2);
 //      String maxlist = Collections.max(list2);
@@ -234,6 +242,66 @@ public class Main {
 
         hashSet.forEach((s) -> System.out.println("HashSet "+ s));
     }
+
+    public static void jsonage (){
+
+        int ar =145263;
+        List<Integer> integers = Arrays.asList(ar);
+        System.setProperty("http.agent", "Chrome");
+    try {
+        URL url = new URL("https://coderbyte.com/api/challenges/json/age-counting");
+        try {
+            URLConnection connection = url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            System.out.println(inputStream);
+
+            /*int content;
+            while ((content = inputStream.read()) != -1) {
+                System.out.print((char)content);
+            }*/
+            String value = "{data: key=IAfpK, age=58, key=WNVdi, age=64, key=jp9zt, age=47, key=0Sr4C, age=68}";
+            String value2 =value.substring(6,value.length()-1);
+
+            String[] keyages = value2.split(",");
+            ArrayList<Integer> agelist = new ArrayList<>();
+
+
+
+            //Map<String, Integer> myMap = new HashMap<String, Integer>();
+            for (int i=0;i<keyages.length;i++) {
+                String keyage = keyages[i];
+                String[] keyValue = keyage.split("=");
+                if(keyValue[0].equals(" age"))
+                    agelist.add(Integer.valueOf(keyValue[1]));
+            }
+
+            long nb = agelist.stream().filter(i->i>=50).count();
+            System.out.println("hey");
+
+            /*String json = inputStream;  // sample json string
+            Pattern codePattern = Pattern.compile("\"code\"\\s*:\\s*\"([^,]*)\",");
+            Pattern messagePattern = Pattern.compile("\"message\"\\s*:\\s*\"([^,]*)\",");
+            Pattern statusPattern = Pattern.compile("\"status\"\\s*:\\s*\"(FAILURE)\"");
+
+            Matcher code_matcher = codePattern.matcher(json);
+            Matcher message_matcher = messagePattern.matcher(json);
+            Matcher status_matcher = statusPattern.matcher(json);
+
+            if (code_matcher.find() && message_matcher.find() && status_matcher.find()) {
+
+                System.out.println("\nException found!");
+
+                System.out.println("\n" + code_matcher.group(1));
+                System.out.println("\n" + message_matcher.group(1));
+                System.out.println("\n" + status_matcher.group(1));
+            }*/
+        } catch (IOException ioEx) {
+            System.out.println(ioEx);
+        }
+    } catch (MalformedURLException malEx) {
+        System.out.println(malEx);
+    }
+}
     static void hello(Integer a){
         System.out.println("Hello "+a);
     }
