@@ -1,55 +1,63 @@
 package com.learn.thread;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import static java.lang.Thread.sleep;
 
-public class Counter {
+public  class Counter implements C,B {
 
-    private static int count=0;
+    //bonne implementation pour le mettre thread safe
+    private static int value = 0;
 
-    public static int increment(){
-        count=count+1;
-
-        return count;
-    }
-    public static int runincrement() {
-        count=count+1;
-
-        return count;
+    public static synchronized int increment() {
+        return value++;
     }
 
-    public  static void main(String[] args) {
-        int t =0;
+    @Override
+    public void test() {
 
+    }
 
-        Runnable r = () ->{
-                try {
+    @Override
+    public void manger() {
+        C.super.manger();
+        System.out.println("je ne mange pas");
+    }
 
-                    for (int i = 0; i < 20; i++) {
-                        System.out.println(i +" <- thread 1 -> "+increment());
-                        sleep(1000);
-                    }
+    public static void main(String[] args) {
+        Counter co = new Counter();
+        co.manger();
 
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-        };
-        Runnable r2 = () ->{
-                try {
+        BigInteger bg = new BigInteger("1");
+        bg.add(new BigInteger("1"));
+        System.out.println(bg);
 
-                    for (int i = 0; i < 20; i++) {
-                        System.out.println(i+" <- thread 2 -> "+increment());
-                        sleep(1000);
-                    }
+        List<String> recipeForOne = new ArrayList<>();
+        recipeForOne.add("456 oyters");
+        recipeForOne.add("78 thons of chocolate");
+        recipeForOne.add("99 elephants ");
 
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+        int nbPersons = 123;
 
-        };
-
-        r.run();
-        r2.run();
+        List<String> adjustedRecipe = adjustQuantities(recipeForOne, nbPersons);
+        System.out.println("hey");
 
 
     }
+
+    public static List<String> adjustQuantities(List<String> ingredients, int nbPersons) {
+        List<String> adjustedIngredients = new ArrayList<>();
+
+        for (String ingredient : ingredients) {
+            String[] parts = ingredient.split(" ", 2);
+            int quantity = Integer.parseInt(parts[0]) * nbPersons;
+            adjustedIngredients.add(quantity + " " + parts[1]);
+        }
+
+        return adjustedIngredients;
+    }
+
 }

@@ -5,16 +5,16 @@ public class ComputeJoinPoint {
         while(s1!=s2) {
 
             if(s1<s2) {
-                s1=foundNext(s1);
+                s1=foundValue(s1);
             }else {
-                s2=foundNext(s2);
+                s2=foundValue(s2);
             }
         }
 
         return s1;
     }
 
-    static int foundNext(int s1) {
+    static int foundValue(int s1) {
 
         int next=0;
         int s = s1;

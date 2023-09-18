@@ -8,8 +8,30 @@ package com.learn.Node;
     public Node(int i) {
         value=i;
     }
+     Node root;
 
-    @Override
+     public Node() {
+         this.root = null;
+     }
+
+     Node find(int n) {
+         return find(root, n);
+     }
+
+     Node find(Node node, int n) {
+         if (node == null)
+             return null;
+         if (node.value == n)
+             return node;
+         if (node.value > n)
+             return find(node.left, n);
+         if (node.value < n)
+             return find(node.right, n);
+
+         return null;
+     }
+
+     @Override
     public String toString() {
         return "Node{" +
                 "left=" + left +
@@ -34,6 +56,7 @@ public class BinaryTree {
     }
 
     Node find(int n) {
+        this.root = new Node();
         return find(root, n);
     }
     Node find(Node node, int n) {

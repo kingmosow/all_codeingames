@@ -11,7 +11,6 @@ public class OptimalChange {
      static Change optimalChange(long s) {
         long change = s;
         Change c = new Change();
-        //大于5的基数；
          if (s==1 ||s==3)
              return null;
         if (change >= 5  &&  change % 2 == 1) {
@@ -25,11 +24,10 @@ public class OptimalChange {
     }
 
     public static void main(String[] args) {
-        long s=10L;
+        long s=27L;
 
-        OptimalChange op = new OptimalChange();
-        Change c = op.optimalChange(s);
-        System.out.println(c);
+        Change c = optimalChange(s);
+        System.out.println(c.coin2+" coin2 - "+c.bill5+" bill5 - "+c.bill10+" bill10");
 
     }
 }

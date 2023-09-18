@@ -1,18 +1,13 @@
 package com.learn;
 
-import javax.xml.crypto.Data;
 import java.io.InputStream;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -24,11 +19,22 @@ public class Main {
     //https://github.com/JosefNafaa/CodingGameJavaExos/tree/master/src
     //https://github.com/Alik64/Revision/blob/dbccb0f266a962302a3b2eba9f32a4fd96341b24/CG/_cg/tennis/tennis.js
 
+
     static Boolean a(int i, int j){
         return i + j == 1 || i == 1 || j == 1;
     }
 
     public static void main(String[] args) {
+
+        computeSizeOnDisk(512, 1500);
+
+        System.out.println(translate("Bonjour le monde!"));
+
+
+        getIdByName("Zidanes");
+        int x=5;
+        int y=x;
+        y=10;
 
         jsonage();
 //        filtrer tab de string
@@ -363,8 +369,6 @@ public class Main {
     }
     //tournoi echec nombre de paires disponibles
     static int count(int n) {
-
-
         int sorti=0;
 
         sorti= n*(n-1)/2;
@@ -492,6 +496,8 @@ public class Main {
             System.out.println("L'élément n'existe pas!");
             return false;
         }
+
+//        return Arrays.binarySearch(ints,k)>-1;
     }
     static boolean exists3(int [] ints , int k){
         long startTime = System.nanoTime();
@@ -614,6 +620,18 @@ public class Main {
         return t;
 
     }
+//    public static String findLengthiestWord(String inputTxt) {
+//        String[] kto =  inputTxt.split("\\w");
+//
+//        Arrays.stream(kto).map(str -> str.length()).forEach(s->);
+//
+//
+//
+////        int [] tab= Arrays.stream(kto).mapToInt(m->m.length)
+////                .max().orElse(0);
+//
+//        return str;
+//    }
     public static String Format(int n, String str) {
         String kt = str.replace(" ","");
         String[] kto =  kt.split("\\w");
@@ -668,25 +686,6 @@ public class Main {
                 break;
             }
         }
-
-        long endTime = System.nanoTime();
-
-        //System.out.println("Execution time in milliseconds 2 : " + (endTime - startTime) / 1000000);
-
-        int numbersn=2;
-
-
-//        Arrays.stream(numbers)
-        /*Map<String, Long> collect = Arrays.stream(numbers).mapToObj(m -> Integer.toString(m))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        System.out.println(collect);*/
-
-//        list.stream()
-//                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-//
-//        Arrays.stream(input.split(""))
-//                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
         return pairnum;
     }
     public static int closestToZero(int[] ts) {
@@ -699,7 +698,7 @@ public class Main {
                 tneg++;
         }
         if(tneg==ts.length)
-            return Arrays.stream(ts).max().orElse(0);
+        return Arrays.stream(ts).max().orElse(0);
 
         return Arrays.stream(ts).map(m->Math.abs(m)).min().orElse(0);
     }
@@ -717,6 +716,165 @@ public class Main {
         return pi;
     }
 
+    public static int computeCheckDigit(String iN) {
+        // Write your code here
+        // To debug: System.err.println("Debug messages...");
+
+        int sum = 0;
+        for (int i = 0; i < iN.length(); i++) {
+            if (i % 2 == 0) {
+                sum += Integer.parseInt(iN.substring(i, i + 1));
+            }
+        }
+        sum *= 3;
+        for (int i = 0; i < iN.length(); i++) {
+            if (i % 2 != 0) {
+                sum += Integer.parseInt(iN.substring(i, i + 1));
+            }
+        }
+        int lastDigit = sum % 10;
+        if (lastDigit != 0) {
+            return 10 - lastDigit;
+        }
+        return lastDigit;
+    }
+    void print(Reader reader) throws IOException {
+
+        try {
+            int code = reader.read();
+            while (code != -1) {
+                System.out.print((char) code);
+                code = reader.read();
+            }
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static boolean isTwin(String a, String b ){
+        if( a == null || b == null) return false;
+        byte[] ab = a.toLowerCase().getBytes();
+        byte[] bb = b.toLowerCase().getBytes();
+        Arrays.sort(ab);
+        Arrays.sort(bb);
+        return new String(ab).equals(new String(bb));
+    }
+
+    public static String reshape(int n, String str) {
+        //replace each space with empty string
+        str = str.replace(" ", "");
+
+        //insert a '\n' character each n characters
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < str.length(); i++)
+        {
+            if (i % n == 0 && i != 0)
+                result.append("\\n" + str.charAt(i));
+            else
+                result.append(str.charAt(i));
+        }
+
+        return result.toString();
+    }
+
+    public static List<Integer> spell(List<Integer> number) {
+        List<Integer> tab = Arrays.asList(189, 30, 20);
+
+        List<Integer> tab2 = number.stream().filter(s->s%2==0).collect(Collectors.toList());
+        Collections.reverse(tab2);
+        return tab2;
+    }
+
+    public static int findSmallestInterval(int[] numbers) {
+        Arrays.sort(numbers);
+        int result = Integer.MAX_VALUE;
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (i + 1 >= numbers.length) {
+                break;
+            }
+
+            if (Math.abs(numbers[i] - numbers[i + 1]) < result) {
+                result = Math.abs(numbers[i] - numbers[i + 1]);
+            }
+        }
+        return result;
+    }
+    public static String translate(String text) {
+        String vowels = "AEIOUaeiou";
+
+        StringBuilder translation = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (vowels.indexOf(c) != -1 && (i == 0 || vowels.indexOf(text.charAt(i-1)) == -1)) {
+                translation.append("av").append(c);
+            } else {
+                translation.append(c);
+            }
+        }
+        return translation.toString();
+
+    }
+
+    public static int computeSizeOnDisk(int clusterSize, int fileSize) {
+
+        int clustersRequired = (int) Math.ceil((double)fileSize /clusterSize);
+
+        return clustersRequired * clusterSize;
+
+    }
+    public static List<String> adjustQuantities(List<String> ingredients, int nbPersons) {
+        List<String> adjustedIngredients = new ArrayList<>();
+
+        for (String ingredient : ingredients) {
+            String[] parts = ingredient.split(" ", 2);
+            int quantity = Integer.parseInt(parts[0]) * nbPersons;
+            adjustedIngredients.add(quantity + " " + parts[1]);
+        }
+
+        return adjustedIngredients;
+    }
+    static String get(int l, int c) {
+        if (l == 0 || l == c) {
+            return String.valueOf(1);
+        } else {
+            return String.valueOf(fact(l).divide(fact(c).multiply(fact(l - c))));
+        }
+
+    }
+
+    static BigInteger fact(int number) {
+        BigInteger factorial = BigInteger.ONE;
+        for (int i = number; i > 0; i--) {
+            factorial = factorial.multiply(BigInteger.valueOf(i));
+        }
+        return factorial;
+    }
+
+    public static int getIdByName(String name) {
+        List<Player> tab = Arrays.asList(new Player(1, "Giroud")
+        , new Player(2, "Zidane"), new Player(3, "Kante"));
+
+        Optional<Player> player = tab.stream().filter(s ->  s.name.equals(name)).findFirst();
+
+        if (!player.isPresent())
+            return 0;
+        return player.get().id;
+    }
+
+    static class Player{
+        public Integer id;
+        public String name;
+
+        public Player(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
 
 }
 
